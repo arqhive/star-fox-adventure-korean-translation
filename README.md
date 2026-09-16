@@ -11,12 +11,14 @@
 
 ## 패치만 적용하기
 
-빌드 없이 쓰려면 릴리스에 첨부된 `sfa-korean-patch.zip`의 xdelta 패치를 일본판 ISO에 적용하세요 (Delta Patcher 또는 `xdelta3 -d -s 원본.iso sfa-korean.xdelta 결과.iso`).
+빌드 없이 쓰려면 [릴리스](https://github.com/arqhive/star-fox-adventure-korean-translation/releases)에서 원하는 폰트의 패치를 받아 일본판 ISO에 적용하세요 (Delta Patcher 또는 `xdelta3 -d -s 원본.iso 패치.xdelta 결과.iso`). 번역 내용은 같고 게임 안 글자 폰트만 다릅니다.
 
-| | MD5 |
-|---|---|
-| 원본: 일본판 Rev 1 (GSAJ01) | `ebff34930b3e8846167047bf71d25fbc` |
-| 결과: `Star Fox Adventures (Korean).iso` | `fbe8e967ddeafbf5ff30c8eb826de596` |
+| 파일 | 폰트 | 결과 ISO MD5 |
+|---|---|---|
+| `sfa-korean-patch-malgun.zip` | 맑은 고딕 Bold | `fbe8e967ddeafbf5ff30c8eb826de596` |
+| `sfa-korean-patch-pretendard.zip` | Pretendard Bold | `1dac82cd28688f8ed5b54ca20f3673b9` |
+
+원본: 일본판 Rev 1 (GSAJ01), MD5 `ebff34930b3e8846167047bf71d25fbc`
 
 패치 만들기 (xdelta 3.1.0, 구버전 패처 호환을 위해 djw 2차 압축):
 
@@ -29,7 +31,8 @@ xdelta3 -e -9 -S djw -A= -s "Star Fox Adventures (Japan) (Rev 1).iso" "Star Fox 
 - Python 3.10 이상
 - `pip install -r requirements.txt`
 - 한글 글리프·로고용 폰트
-  - 게임 내 글리프: 맑은 고딕 Bold (`C:/Windows/Fonts/malgunbd.ttf`, 다른 경로는 환경변수 `SFA_GLYPH_FONT`)
+  - 게임 내 글리프: 기본 맑은 고딕 Bold (`C:/Windows/Fonts/malgunbd.ttf`). `--font` 옵션이나 환경변수 `SFA_GLYPH_FONT`로 변경
+    - Pretendard판: [Pretendard](https://github.com/orioncactus/pretendard) v1.3.9의 `Pretendard-Bold.otf` (OFL)
   - 로고: Noto Sans KR 가변 폰트 (`C:/Windows/Fonts/NotoSansKR-VF.ttf`)
 - 일본판 ISO: `Star Fox Adventures (Japan) (Rev 1).iso`, MD5 `ebff34930b3e8846167047bf71d25fbc`
 
@@ -37,6 +40,12 @@ xdelta3 -e -9 -S djw -A= -s "Star Fox Adventures (Japan) (Rev 1).iso" "Star Fox 
 
 ```bash
 python build.py --iso "Star Fox Adventures (Japan) (Rev 1).iso"
+```
+
+Pretendard판:
+
+```bash
+python build.py --skip-logo --font Pretendard-Bold.otf --out "Star Fox Adventures (Korean, Pretendard).iso" --name "Star Fox Adventures KOR PRETENDARD"
 ```
 
 `--iso`를 생략하면 환경변수 `SFA_JP_ISO` → 저장소 폴더 → 상위 폴더 순서로 GSAJ01 ISO를 찾습니다.

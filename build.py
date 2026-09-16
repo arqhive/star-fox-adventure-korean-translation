@@ -4,6 +4,7 @@
 #   python build.py --iso 원본.iso --out 결과.iso
 #   python build.py --json-only             # 번역 JSON만 생성 (tools/pending.py 등에 사용)
 #   python build.py --skip-logo             # 로고 재생성 생략 (build/override 재사용)
+#   python build.py --font Pretendard-Bold.otf   # 게임 글리프 폰트 지정 (기본: 맑은 고딕 Bold)
 import argparse, glob, os, runpy, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -34,8 +35,11 @@ def main():
     ap.add_argument('--json-only', action='store_true')
     ap.add_argument('--skip-logo', action='store_true')
     ap.add_argument('--atlas', action='store_true', help='build/atlas/에 파일별 글리프 아틀라스 PNG 저장')
+    ap.add_argument('--font', help='게임 글리프 폰트 파일 (환경변수 SFA_GLYPH_FONT와 같음)')
     a = ap.parse_args()
 
+    if a.font:
+        os.environ['SFA_GLYPH_FONT'] = os.path.abspath(a.font)
     os.makedirs(BUILD, exist_ok=True)
     print('== 번역 JSON 생성'); make_jsons()
     if a.json_only:
