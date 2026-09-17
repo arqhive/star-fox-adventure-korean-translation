@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from sfa.gcm import Disc
 from sfa.gametext import load, textures
 
-JP = re.compile(r'[぀-ヿ一-鿿]')
+JP = re.compile('[぀-ヺー-ヿ一-鿿]')   # 가운뎃점 ・(U+30FB)은 한국어 표기에도 쓰므로 제외
 
 if __name__ == '__main__':
     disc = Disc(sys.argv[1])

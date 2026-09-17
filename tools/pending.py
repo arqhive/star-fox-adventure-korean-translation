@@ -7,7 +7,7 @@ from sfa.gcm import Disc
 from sfa.gametext import load, area_path, split_prefix
 from sfa.isopatch import load_translations
 
-JP = re.compile(r'[぀-ヿ一-鿿]')
+JP = re.compile('[぀-ヺー-ヿ一-鿿]')   # 가운뎃점 ・(U+30FB)은 한국어 표기에도 쓰므로 제외
 
 
 def all_areas(disc):

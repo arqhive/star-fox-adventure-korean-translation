@@ -104,12 +104,19 @@ def glyph_font():
     return _FONT
 
 
+def _draw_cell(ch, font):
+    cell = Image.new('L', (CELL + 8, CELL), 0)
+    ImageDraw.Draw(cell).text((4, CELL / 2), ch, font=font, fill=255, anchor='lm')
+    return np.array(cell)
+
+
 def render_glyph(ch):
     """→ (이미지, left, right, top, bottom)"""
     font = glyph_font()
-    cell = Image.new('L', (CELL + 8, CELL), 0)
-    ImageDraw.Draw(cell).text((4, CELL / 2), ch, font=font, fill=255, anchor='lm')
-    a = (np.array(cell).astype(int) + 8) // 17 * 17
+    raw = _draw_cell(ch, font)
+    if not ch.isspace() and raw.any() and np.array_equal(raw, _draw_cell('￿', font)):
+        raise SystemExit(f'글리프 폰트에 없는 글자: {ch!r} (U+{ord(ch):04X}) — 다른 글자로 바꾸거나 폰트를 확인하세요')
+    a = (raw.astype(int) + 8) // 17 * 17
     adv = CELL if ord(ch) >= 0x1100 else max(4, round(font.getlength(ch)) + 1)
     ys, xs = np.nonzero(a)
     if len(xs) == 0:
