@@ -15,8 +15,8 @@
 
 | 파일 | 폰트 | 결과 ISO MD5 |
 |---|---|---|
-| `sfa-korean-patch-malgun.zip` | 맑은 고딕 Bold | `fbe8e967ddeafbf5ff30c8eb826de596` |
-| `sfa-korean-patch-pretendard.zip` | Pretendard Bold | `1dac82cd28688f8ed5b54ca20f3673b9` |
+| `sfa-korean-patch-malgun.zip` | 맑은 고딕 Bold | `2576141100f54707748aebfb47bba31d` |
+| `sfa-korean-patch-pretendard.zip` | Pretendard Bold | `47f8d029251f5944946d99c3493e44a8` |
 
 원본: 일본판 Rev 1 (GSAJ01), MD5 `ebff34930b3e8846167047bf71d25fbc`
 
@@ -97,3 +97,12 @@ python tools/verify_iso.py "Star Fox Adventures (Korean).iso"
 - 배너(opening.bnr) 텍스트는 Shift-JIS만 지원해 한글 불가 → 영문 표기
 - 실행 파일에 내장된 디스크 오류 메시지(디스크를 읽을 수 없을 때만 표시)는 일본어 그대로
 - Dolphin에서 확인. 실기(게임큐브) 동작은 미검증
+
+## 면책 조항
+
+- 이 프로젝트는 개인이 만든 **비공식 팬 번역**이며, Nintendo, Rare 및 그 계열사와 아무런 관련이 없고 승인이나 지원을 받지 않았습니다.
+- 「Star Fox」, 「스타폭스」, 「Star Fox Adventures」 등 게임 이름·캐릭터·로고와 관련 상표 및 저작권은 각 권리자에게 있습니다.
+- 이 저장소와 릴리스에는 게임 데이터(ISO, 실행 파일, 원본 텍스트·이미지)가 포함되어 있지 않습니다. 패치는 직접 정품을 소유한 사람이 자신의 디스크로 만든 이미지에 적용하는 용도로만 제공합니다.
+- 패치를 적용한 ISO를 배포하거나 판매하지 마세요. 이 프로젝트의 결과물을 상업적으로 이용하지 마세요.
+- 이 소프트웨어와 패치는 있는 그대로 제공되며, 사용으로 인해 발생하는 데이터 손상, 세이브 손실, 기기 문제 등 어떤 결과에도 제작자는 책임지지 않습니다. 원본 이미지는 반드시 백업한 뒤 사용하세요.
+- 권리자의 요청이 있으면 저장소와 릴리스를 내리겠습니다.
