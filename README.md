@@ -11,14 +11,16 @@
 
 ## 패치만 적용하기
 
-빌드 없이 쓰려면 [릴리스](https://github.com/arqhive/star-fox-adventure-korean-translation/releases)에서 원하는 폰트의 패치를 받아 일본판 ISO에 적용하세요 (Delta Patcher 또는 `xdelta3 -d -s 원본.iso 패치.xdelta 결과.iso`). 번역 내용은 같고 게임 안 글자 폰트만 다릅니다.
+빌드 없이 쓰려면 [최신 릴리스](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/latest)에서 원하는 폰트의 패치를 받아 일본판 ISO에 적용하세요 (Delta Patcher 또는 `xdelta3 -d -s 원본.iso 패치.xdelta 결과.iso`). 번역 내용은 같고 게임 안 글자 폰트만 다릅니다.
 
-| 파일 | 폰트 | 결과 ISO MD5 |
+| 파일 (v0.9.1) | 폰트 | 결과 ISO MD5 |
 |---|---|---|
-| `sfa-korean-patch-malgun.zip` | 맑은 고딕 Bold | `2576141100f54707748aebfb47bba31d` |
-| `sfa-korean-patch-pretendard.zip` | Pretendard Bold | `47f8d029251f5944946d99c3493e44a8` |
+| `sfa-korean-v0.9.1-malgun.zip` | 맑은 고딕 Bold | `2576141100f54707748aebfb47bba31d` |
+| `sfa-korean-v0.9.1-pretendard.zip` | Pretendard Bold | `47f8d029251f5944946d99c3493e44a8` |
 
 원본: 일본판 Rev 1 (GSAJ01), MD5 `ebff34930b3e8846167047bf71d25fbc`
+
+버전별 변경 내용은 각 [릴리스](https://github.com/arqhive/star-fox-adventure-korean-translation/releases)의 업데이트 기록을 참고하세요.
 
 패치 만들기 (xdelta 3.1.0, 구버전 패처 호환을 위해 djw 2차 압축):
 
