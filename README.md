@@ -13,10 +13,10 @@
 
 빌드 없이 쓰려면 [최신 릴리스](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/latest)에서 원하는 폰트의 패치를 받아 일본판 ISO에 적용하세요 (Delta Patcher 또는 `xdelta3 -d -s 원본.iso 패치.xdelta 결과.iso`). 번역 내용은 같고 게임 안 글자 폰트만 다릅니다.
 
-| 파일 (v1.0) | 폰트 | 결과 ISO MD5 |
+| 파일 (v1.0.1) | 폰트 | 결과 ISO MD5 |
 |---|---|---|
-| `sfa-korean-v1.0-malgun.zip` | 맑은 고딕 Bold | `e36c9737e302b0669bb0e79255c6e494` |
-| `sfa-korean-v1.0-pretendard.zip` | Pretendard Bold | `d2c62b7da2006b8c73bb8ff759c4deab` |
+| `sfa-korean-v1.0.1-malgun.zip` | 맑은 고딕 Bold | `ca1e3deb99f5aa8b9813dbcad53fdbc7` |
+| `sfa-korean-v1.0.1-pretendard.zip` | Pretendard Bold | `765f4f7f82c74e4eb9e97d2c7c5256d0` |
 
 원본: 일본판 Rev 1 (GSAJ01), MD5 `ebff34930b3e8846167047bf71d25fbc`
 
