@@ -98,7 +98,7 @@ python tools/verify_iso.py "Star Fox Adventures (Korean).iso"
 
 - 배너(opening.bnr) 텍스트는 Shift-JIS만 지원해 한글 불가 → 영문 표기
 - 실행 파일에 내장된 디스크 오류 메시지(디스크를 읽을 수 없을 때만 표시)는 일본어 그대로
-- Dolphin에서 확인. 실기(게임큐브) 동작은 미검증
+- Dolphin, 실기(Wii U vWii + Nintendont)에서 확인. Wii의 Nintendont도 같은 조건이라 문제없을 것으로 보이며, 게임큐브 실기(Swiss)는 미검증
 
 ## 면책 조항
 
