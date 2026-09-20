@@ -28,7 +28,7 @@ def find_jp_iso():
         named = os.path.join(d, JP_ISO_NAME)
         if os.path.exists(named):
             return named
-        for p in sorted(glob.glob(os.path.join(d, '*.iso'))):
+        for p in sorted(glob.glob(os.path.join(glob.escape(d), '*.iso'))):
             if is_jp_iso(p) and 'Korean' not in os.path.basename(p):
                 return p
     raise SystemExit('일본판 ISO(GSAJ01)를 찾지 못했습니다. --iso 옵션이나 SFA_JP_ISO 환경변수로 지정하세요.')
@@ -37,5 +37,5 @@ def find_jp_iso():
 def translation_jsons():
     """빌드에 쓰는 번역 JSON 목록 (순서 = 우선순위)"""
     fixed = [os.path.join(TRANSLATION_DIR, 'menu.json'), os.path.join(JSON_DIR, 'kor_prologue.json')]
-    chapters = sorted(glob.glob(os.path.join(JSON_DIR, 'kor_ch*.json')))
+    chapters = sorted(glob.glob(os.path.join(glob.escape(JSON_DIR), 'kor_ch*.json')))
     return [p for p in fixed + chapters if os.path.exists(p)]

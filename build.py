@@ -18,7 +18,7 @@ DISC_NAME = 'Star Fox Adventures KOREAN'
 
 def make_jsons():
     sys.path.insert(0, TRANSLATION_DIR)
-    scripts = ['prologue.py'] + sorted(os.path.basename(p) for p in glob.glob(os.path.join(TRANSLATION_DIR, 'ch*.py')))
+    scripts = ['prologue.py'] + sorted(os.path.basename(p) for p in glob.glob(os.path.join(glob.escape(TRANSLATION_DIR), 'ch*.py')))
     for s in scripts:
         runpy.run_path(os.path.join(TRANSLATION_DIR, s), run_name='__main__')
 
