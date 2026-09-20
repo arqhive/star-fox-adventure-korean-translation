@@ -13,12 +13,14 @@
 
 빌드 없이 쓰려면 [최신 릴리스](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/latest)에서 원하는 폰트의 패치를 받아 일본판 ISO에 적용하세요 (Delta Patcher 또는 `xdelta3 -d -s 원본.iso 패치.xdelta 결과.iso`). 번역 내용은 같고 게임 안 글자 폰트만 다릅니다.
 
-| 파일 (v1.0.2) | 폰트 | 결과 ISO MD5 |
+| 파일 (v1.1) | 폰트 | 결과 ISO MD5 |
 |---|---|---|
-| `sfa-korean-v1.0.2-malgun.zip` | 맑은 고딕 Bold | `57d186edf1002d2a0be0587cc5c73782` |
-| `sfa-korean-v1.0.2-pretendard.zip` | Pretendard Bold | `422de2dbf7764f0e5c1e9bd7fe811bc6` |
+| `sfa-korean-v1.1-malgun.zip` | 맑은 고딕 Bold | `c9b1f3a673e96e8a79e6c17cda5d4aef` |
+| `sfa-korean-v1.1-pretendard.zip` | Pretendard Bold | `9365e36151888c3013547d6c9fa3c634` |
 
 원본: 일본판 Rev 1 (GSAJ01), MD5 `ebff34930b3e8846167047bf71d25fbc`
+
+v1.1은 타이틀 로고의 영문 명판 아래 잔여 픽셀을 제거하고, 한글 두 줄의 크기와 간격을 조정해 외곽선이 붙지 않도록 개선했습니다. 번역·게임 내 폰트는 v1.0.2와 동일합니다. 자세한 변경 및 검증 내용은 [v1.1 릴리스 기록](docs/releases/v1.1.md)을 참고하세요.
 
 버전별 변경 내용은 각 [릴리스](https://github.com/arqhive/star-fox-adventure-korean-translation/releases)의 업데이트 기록을 참고하세요.
 
@@ -52,6 +54,19 @@ python build.py --skip-logo --font Pretendard-Bold.otf --out "Star Fox Adventure
 
 `--iso`를 생략하면 환경변수 `SFA_JP_ISO` → 저장소 폴더 → 상위 폴더 순서로 GSAJ01 ISO를 찾습니다.
 결과는 원본 옆에 `Star Fox Adventures (Korean).iso`로 만들어집니다 (`--out`으로 변경).
+
+### 기존 한글 ISO의 로고만 교체
+
+v1.1 배포본은 검증된 v1.0.2 각 폰트판에 다음 도구로 로고만 교체해 만들었습니다. 번역·폰트·DOL·배너는 재생성하지 않습니다. 출력에는 아직 존재하지 않는 파일 경로를 지정하세요.
+
+```bash
+python assets/make_logo.py "원본 일본판.iso"
+python tools/replace_logo.py "기존 한글판.iso" "로고 수정 한글판.iso"
+```
+
+`--logo`로 별도의 512×191 PNG를 지정할 수도 있습니다. 배포용 xdelta는 로고 수정 한글판과 **원본 일본판 ISO**를 비교해 만듭니다.
+
+### 전체 빌드 순서
 
 빌드 순서:
 1. `translation/*.py` → `build/json/*.json` (번역 원고를 JSON으로 변환)

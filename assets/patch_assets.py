@@ -16,12 +16,14 @@ def write(path, data):
     open(p, 'wb').write(data)
 
 
-def patch_logo(disc):
+def patch_logo(disc, logo_path=None):
     binf = bytearray(disc.read('gamefront/TEX0.bin')); tab = bytearray(disc.read('gamefront/TEX0.tab'))
     ent = struct.unpack_from('>I', tab, LOGO_TAB_INDEX * 4)[0]; off = (ent & 0xFFFFFF) * 2
     raw = bytearray({o: r for o, c, r in zlb_items(bytes(binf))}[off])
     w, h, fmt = tex_info(raw); assert (w, h, fmt) == (512, 191, 14)
-    logo = np.array(Image.open(os.path.join(BUILD, 'logo_kor.png')).convert('RGB'))
+    logo = np.array(Image.open(logo_path or os.path.join(BUILD, 'logo_kor.png')).convert('RGB'))
+    if logo.shape != (h, w, 3):
+        raise ValueError(f'로고 크기는 {w}x{h}여야 합니다: {logo.shape}')
     data = enc_cmpr(logo)
     raw[HEADER:HEADER + len(data)] = data          # 뒤쪽 절반은 게임이 쓰지 않는 버퍼 여유분 → 원본 유지
     Image.fromarray(dec_cmpr(data, w, h)).save(os.path.join(BUILD, 'logo_kor_cmpr_preview.png'))
@@ -32,6 +34,7 @@ def patch_logo(disc):
     struct.pack_into('>I', tab, LOGO_TAB_INDEX * 4, (ent & 0xFF000000) | (pos // 2))
     write('gamefront/TEX0.bin', bytes(binf)); write('gamefront/TEX0.tab', bytes(tab))
     print('로고 교체:', hex(off), '->', hex(pos), len(new) - 16, 'bytes')
+    return {'gamefront/TEX0.bin': bytes(binf), 'gamefront/TEX0.tab': bytes(tab)}
 
 
 def patch_banner(disc):

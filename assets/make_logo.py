@@ -37,9 +37,10 @@ feather = cv2.GaussianBlur(mask, (0, 0), 4).astype(np.float32)[..., None] / 255.
 soft = (bg * feather + bgr * (1 - feather)).astype(np.uint8)
 base = Image.fromarray(cv2.cvtColor(soft, cv2.COLOR_BGR2RGB)).convert('RGBA')
 
-# 2) 원본에서 유지할 부분: 작은 영문 「STARFOX ADVENTURES」, 스우시(오른쪽 위 꼬리), ™
+# 2) 원본에서 유지할 부분: 작은 영문 「STARFOX ADVENTURES」 명판
 keep = Image.new('L', (W, H), 0); kd = ImageDraw.Draw(keep)
-kd.polygon([(158, 28), (364, 28), (356, 54), (148, 54)], fill=255)   # 영문 「STARFOX ADVENTURES」 명판
+kd.polygon([(158, 28), (364, 28), (358, 50), (150, 50)], fill=255)
+# y=52 부근부터는 일본어 제목의 노란 획과 베벨. 명판에 함께 복사하지 않는다.
 keep = keep.filter(ImageFilter.GaussianBlur(0.6))
 
 # 3) 한글 제목 렌더
@@ -105,10 +106,11 @@ def silhouette():
     plate = np.zeros_like(fill); cv2.fillPoly(plate, [np.array([(154, 24), (370, 24), (362, 58), (144, 58)])], 1)
     return fill * (1 - plate)
 
-STROKE = 5      # 영역 검사에 쓰는 테두리 두께 (남색 선+베벨)
+STROKE = 7      # stylize의 남색 선+은색 베벨+청록 외곽선 전체 반경
+LINE_GAP = 3   # 두 줄의 외곽선 사이에 남길 최소 간격 (광채는 겹쳐도 됨)
 TOLERANCE = 40  # 영역 밖으로 나가도 되는 픽셀 수 (바깥 광채 끝부분)
 
-def fit_line(text, allowed, y0, y1, x1, sizes, stretches, shears, prefer_cx):
+def fit_line(text, allowed, y0, y1, x1, sizes, stretches, shears, prefer_cx, blocked=None):
     """allowed 영역 안에 (테두리 포함) 들어가는 배치 중 글자 면적이 가장 큰 것 → (캔버스 크기 마스크, 정보)"""
     band = np.zeros_like(allowed); band[y0:y1, :x1] = 1
     outside = (1 - allowed * band).astype(np.float32)
@@ -128,7 +130,12 @@ def fit_line(text, allowed, y0, y1, x1, sizes, stretches, shears, prefer_cx):
                 th, tw = tmpl.shape
                 if th > H or tw > W: continue
                 cost = cv2.matchTemplate(outside, tmpl, cv2.TM_CCORR)
-                ok = np.argwhere(cost <= TOLERANCE)
+                valid = cost <= TOLERANCE
+                if blocked is not None:
+                    # 실루엣 검사의 허용 오차를 줄 간격에 적용하면 테두리가 다시 붙는다.
+                    contact = cv2.matchTemplate(blocked.astype(np.float32), tmpl, cv2.TM_CCORR)
+                    valid &= contact < 0.5
+                ok = np.argwhere(valid)
                 if not len(ok): continue
                 cy = (y0 + y1) / 2 - th / 2
                 y, x = min(ok, key=lambda q: (q[0] - cy) ** 2 + (q[1] + tw / 2 - prefer_cx) ** 2)
@@ -139,12 +146,15 @@ def fit_line(text, allowed, y0, y1, x1, sizes, stretches, shears, prefer_cx):
     return best[1], best[2]
 
 allowed = silhouette()
-SIZES = range(66, 34, -2); STRETCHES = [round(1.0 + 0.1 * i, 1) for i in range(13)]; SHEARS = (0.22, 0.32, 0.42)
-m1, i1 = fit_line('스타폭스', allowed, 44, 118, 420, SIZES, STRETCHES, SHEARS, 220)
-k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-allowed2 = allowed * (1 - cv2.dilate((m1 > 60).astype(np.uint8), k))  # 윗줄 글자 본체와 겹치지 않게
-m2, i2 = fit_line('어드벤처', allowed2, 96, 166, 512, SIZES, STRETCHES, SHEARS, 300)
+SIZES = range(66, 28, -2); STRETCHES = [round(1.0 + 0.1 * i, 1) for i in range(13)]; SHEARS = (0.22, 0.32, 0.42)
+# 윗줄의 최대 면적만 우선하면 아랫줄의 테두리 공간이 사라진다.
+m1, i1 = fit_line('스타폭스', allowed, 44, 106, 420, SIZES, STRETCHES, SHEARS, 220)
+k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * (STROKE + LINE_GAP) + 1,) * 2)
+blocked = cv2.dilate((m1 > 60).astype(np.uint8), k)
+m2, i2 = fit_line('어드벤처', allowed, 96, 166, 512, SIZES, STRETCHES, SHEARS, 300, blocked)
 print('배치:', i1, i2)
+Image.fromarray(m1).save(os.path.join(BUILD, 'logo_line1_mask.png'))
+Image.fromarray(m2).save(os.path.join(BUILD, 'logo_line2_mask.png'))
 glyph_mask = Image.fromarray(np.maximum(m1, m2))
 
 canvas = base.copy()
