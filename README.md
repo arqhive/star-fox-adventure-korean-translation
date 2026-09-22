@@ -157,7 +157,7 @@ docs/          용어집·말투표, 파일 포맷 메모, 릴리즈 노트 사�
 
 ## 크레딧·라이선스
 
-- 제작: arqhive.
+- 이 저장소의 도구 코드, 한국어 번역문, 문서: [MIT License](LICENSE) (© 2026 arqhive).
 - Pretendard판 글리프: [Pretendard](https://github.com/orioncactus/pretendard), SIL Open Font License 1.1.
 - 맑은 고딕판 글리프: Microsoft 맑은 고딕 Bold로 그렸습니다.
 - 타이틀 로고: Noto Sans KR로 그렸습니다.
