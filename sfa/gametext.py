@@ -93,35 +93,67 @@ def i4_encode(img):
 
 # ---- 한글 글리프 렌더 (셀 높이 21, 전각 폭 21: 원본 일본어 폰트 메트릭과 동일) ----
 CELL = 21
+INK_BOTTOM = 20      # 원본 일본어 글리프의 잉크 아래끝 (486자 중 321자가 이 값)
 _FONT = None
+_YOFS = 0            # 폰트마다 다른 세로 위치를 원본 기준선에 맞추는 보정값
 
 
 def glyph_font():
-    global _FONT
+    global _FONT, _YOFS
     if _FONT is None:
         path = os.environ.get('SFA_GLYPH_FONT', 'C:/Windows/Fonts/malgunbd.ttf')
         _FONT = ImageFont.truetype(path, 20)
+        _YOFS = _baseline_offset(_FONT)
     return _FONT
 
 
-def _draw_cell(ch, font):
+def _baseline_offset(font):
+    """받침 없는 한글의 잉크 아래끝을 원본과 같은 INK_BOTTOM 으로 맞추는 y 보정.
+    폰트의 ascent/descent 가 제각각이라 셀 중앙 정렬만으로는 1~2px 어긋난다
+    (그러면 원본 그대로 쓰는 버튼 아이콘과 높이가 안 맞는다)."""
+    bottoms = []
+    for ch in '가나다마사자카타파하어오우':
+        a = _draw_cell(ch, font, 0)
+        ys = np.nonzero(a)[0]
+        if len(ys):
+            bottoms.append(ys.max() + 1)
+    if not bottoms:
+        return 0
+    return INK_BOTTOM - int(round(sum(bottoms) / len(bottoms)))
+
+
+def _draw_cell(ch, font, yofs=0):
     cell = Image.new('L', (CELL + 8, CELL), 0)
-    ImageDraw.Draw(cell).text((4, CELL / 2), ch, font=font, fill=255, anchor='lm')
+    ImageDraw.Draw(cell).text((4, CELL / 2 + yofs), ch, font=font, fill=255, anchor='lm')
     return np.array(cell)
 
 
-def render_glyph(ch):
-    """→ (이미지, left, right, top, bottom)"""
+def render_glyph(ch, shrink=0):
+    """→ (이미지, left, right, top, bottom)
+    shrink: 글자 높이를 정확히 그만큼(px) 줄인다. 4배로 그려 축소하고, 위쪽 끝은 그대로 두어 아래 끝이 올라간다."""
     font = glyph_font()
-    raw = _draw_cell(ch, font)
-    if not ch.isspace() and raw.any() and np.array_equal(raw, _draw_cell('￿', font)):
+    raw = _draw_cell(ch, font, _YOFS)
+    if not ch.isspace() and raw.any() and np.array_equal(raw, _draw_cell('￿', font, _YOFS)):
         raise SystemExit(f'글리프 폰트에 없는 글자: {ch!r} (U+{ord(ch):04X}) — 다른 글자로 바꾸거나 폰트를 확인하세요')
-    a = (raw.astype(int) + 8) // 17 * 17
     adv = CELL if ord(ch) >= 0x1100 else max(4, round(font.getlength(ch)) + 1)
+    a = (raw.astype(int) + 8) // 17 * 17
     ys, xs = np.nonzero(a)
     if len(xs) == 0:
-        return np.zeros((0, 0), np.uint8), adv, 0, CELL, 0
+        return np.zeros((0, 0), np.uint8), adv - shrink, 0, CELL, 0
     x0, x1, y0, y1 = xs.min(), xs.max() + 1, ys.min(), ys.max() + 1
+    if shrink and y1 - y0 > shrink + 2:
+        big = ImageFont.truetype(font.path, 80)
+        cell = Image.new('L', ((CELL + 8) * 4, CELL * 4), 0)
+        ImageDraw.Draw(cell).text((16, CELL * 2 + _YOFS * 4), ch, font=big, fill=255, anchor='lm')
+        hi = np.array(cell)
+        hy, hx = np.nonzero(hi > 34)
+        h = y1 - y0 - shrink
+        w = max(1, round((x1 - x0) * h / (y1 - y0)))
+        img = np.array(Image.fromarray(hi[hy.min():hy.max() + 1, hx.min():hx.max() + 1]).resize((w, h), Image.LANCZOS))
+        img = (img.astype(int) + 8) // 17 * 17
+        adv -= shrink
+        left = max(0, x0 - 4)
+        return img.astype(np.uint8), left, max(0, adv - left - w), y0, CELL - (y0 + h)
     left = max(0, x0 - 4); w = x1 - x0
     return a[y0:y1, x0:x1].astype(np.uint8), left, max(0, adv - left - w), y0, CELL - y1
 
@@ -130,10 +162,11 @@ def kana_kanji(cp):
     return 0x3040 <= cp <= 0x30ff or 0x4e00 <= cp <= 0x9fff
 
 
-def build_file(data, trans, common):
+def build_file(data, trans, common, shrink=0):
     """일본어 gametext 파일에 번역을 적용해 새 바이너리 생성.
     trans: {텍스트ID: 번역}, common: {(ID, 원문): 번역}
-    번역 값: 'a|b' 문자열(코드 포함 전체 교체) 또는 리스트(줄마다 앞쪽 코드 유지, None=원문, 끝 '...'=나머지 원문)"""
+    번역 값: 'a|b' 문자열(코드 포함 전체 교체) 또는 리스트(줄마다 앞쪽 코드 유지, None=원문, 끝 '...'=나머지 원문)
+    shrink: 새로 그리는 글리프를 몇 px 작게 할지 (render_glyph 참고)"""
     r = load(data)
     chars = [list(c) for c in r['chars']]
     texts = r['texts']; strs = r['strs']
@@ -167,7 +200,7 @@ def build_file(data, trans, common):
     for s in new_strs:
         for ch in text_chars(s):
             if ord(ch) not in have:
-                img, l, rr, top, bot = render_glyph(ch)
+                img, l, rr, top, bot = render_glyph(ch, shrink)
                 c = [ord(ch), 0, 0, l, rr, top, bot, img.shape[1], img.shape[0], 0, tidx]
                 chars.append(c); glyphs.append((c, img)); have.add(ord(ch)); added.append(ch)
 

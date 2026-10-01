@@ -7,6 +7,8 @@ from .gametext import load, build_file, area_path
 from .config import GAME_ID
 
 DISC_SIZE = 1459978240
+# 구역별 새 글리프 축소(px): Link 의 버튼 안내 글자(공격·되돌리기 등)가 띠 아래 테두리에 닿아 2px 줄임 (실기 확인)
+SHRINK = {'Link': 2}
 
 
 def load_translations(jsons):
@@ -18,7 +20,10 @@ def load_translations(jsons):
 
 
 def build_gametext(disc, trans, atlas_dir=None, log=print):
-    """→ {디스크 경로: 새 바이너리}"""
+    """→ {디스크 경로: 새 바이너리}
+    글리프 축소는 SHRINK, 환경변수 SFA_SHRINK='Link:1,…' 로 덮어쓸 수 있다"""
+    shrink = dict(SHRINK)
+    shrink.update({a: int(n) for a, n in (x.split(':') for x in os.environ.get('SFA_SHRINK', '').split(',') if x)})
     # 공통 문구: 번역된 텍스트를 다른 구역의 같은 ID·같은 원문에도 적용
     common = {}
     for area, d in trans.items():
@@ -43,7 +48,7 @@ def build_gametext(disc, trans, atlas_dir=None, log=print):
             r0 = load(data)
             if not any((t[0], '|'.join(r0['strs'][t[6]:t[6] + t[1]])) in common for t in r0['texts']):
                 continue
-        new, added, atlas, (oh, nh) = build_file(data, trans.get(area, {}), common)
+        new, added, atlas, (oh, nh) = build_file(data, trans.get(area, {}), common, shrink.get(area, 0))
         out[path] = new
         if atlas_dir:
             os.makedirs(atlas_dir, exist_ok=True)
