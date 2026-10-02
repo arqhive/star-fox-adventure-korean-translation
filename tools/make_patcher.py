@@ -67,7 +67,8 @@ def main():
         A, B = orig.read(p), build.read(p)
         (tmp / 'a').write_bytes(A); (tmp / 'b').write_bytes(B)
         patch = f'{i:03d}.xdelta'
-        subprocess.run([xdelta, '-e', '-f', '-9', '-S', 'djw', '-s', str(tmp / 'a'), str(tmp / 'b'),
+        # -A= : 헤더에 파일 경로(PC 사용자 이름 포함)를 적지 않음
+        subprocess.run([xdelta, '-e', '-f', '-9', '-S', 'djw', '-A=', '-s', str(tmp / 'a'), str(tmp / 'b'),
                         str(out / 'data' / patch)], check=True)
         lines.append('\t'.join(('raw', patch, p, md5(A), md5(B))))
     shutil.rmtree(tmp)
