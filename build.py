@@ -45,6 +45,7 @@ def main():
     if a.json_only:
         return
     iso = a.iso or find_jp_iso()
+    os.environ['SFA_JP_ISO'] = os.path.abspath(iso)   # 하위 검사 도구(check_counts 등)도 같은 원본을 쓰게
     out = a.out or os.path.join(os.path.dirname(iso), OUT_ISO_NAME)
     print('== 줄 수 검사'); run('tools/check_counts.py')
     if not a.skip_logo:
