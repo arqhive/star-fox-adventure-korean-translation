@@ -108,8 +108,10 @@ python build.py --iso "Star Fox Adventures (Japan) (Rev 1).iso" --font GmarketSa
 v1.2f부터는 ISO 통째 xdelta 대신 파일 단위 패처로 배포합니다. 원본과 한글 ISO를 FST 기준으로 비교해 바뀐 파일마다 xdelta 차분을 만들고, 사용자용 `patcher/패치하기.bat`·`patcher/patch.ps1`과 wit·xdelta3를 함께 묶습니다.
 
 ```bash
-python tools/make_patcher.py --orig "Star Fox Adventures (Japan) (Rev 1).iso" --build "Star Fox Adventures (Korean).iso"     --out ../release/v1.2f/sfa-korean-v1.2f --version 1.2f --wit <wit-cygwin64 폴더> --xdelta <xdelta3.exe> --readme README.txt
+python tools/make_patcher.py --orig "Star Fox Adventures (Japan) (Rev 1).iso" --build "Star Fox Adventures (Korean).iso"     --out ../release/v1.2f/sfa-korean-v1.2f --version 1.2f --wit <wit-cygwin64 폴더> --xdelta <xdelta3.exe> --readme patcher/README.txt
 ```
+
+`patcher/README.txt`는 ZIP에 넣는 사용자 설명서입니다. wit은 [Wiimms ISO Tools](https://wit.wiimm.de/) v3.05a cygwin64판, xdelta3는 [3.1.0](https://github.com/jmacd/xdelta-gpl/releases/tag/v3.1.0) Windows판을 씁니다.
 
 패처는 원본 ISO를 복사한 뒤 바뀐 파일만 디스크 끝 빈 곳에 쓰고 FST와 게임 이름만 고칩니다. 빌드와 같은 배치 규칙이라 Redump 정본에 적용하면 빌드 결과와 바이트까지 같은 ISO가 나옵니다.
 

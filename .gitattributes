@@ -2,3 +2,4 @@
 *.png binary
 *.bat eol=crlf
 *.ps1 eol=crlf
+*.txt -text
