@@ -3,12 +3,12 @@
 *Star Fox Adventures* (게임큐브, 일본판 Rev 1 `GSAJ01`) 비공식 한국어 팬 패치입니다.
 대사는 일본어판 원문을 기준으로 번역했습니다.
 
-**제작: arqhive** · **최신 버전: [v1.1](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.1)**
+**제작: arqhive** · **최신 버전: [v1.2f](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2f) (최종판)**
 
 - 대사, 메뉴, 컷신 자막, 슬리피 힌트, 커뮤니케이터, 월드맵 등 게임 내 텍스트 전체를 한글화했습니다.
 - 파일마다 필요한 한글 글리프를 그려 넣는 방식이라 실행 파일(DOL)은 수정하지 않습니다.
 - 타이틀 로고를 「스타폭스 / 어드벤처」로 한글화했습니다.
-- 게임 안 글자 폰트는 맑은 고딕 Bold판과 Pretendard Bold판 중에서 고를 수 있습니다. 번역 내용은 같습니다.
+- 게임 안 글자 폰트는 G마켓 산스 Bold입니다. 한글 글자 높이를 버튼 아이콘에 맞췄습니다.
 - 용어는 스타폭스 64 3D 한국 정발판 표기를 우선하고, 나머지는 일본어 발음을 따랐습니다([`docs/용어집.md`](docs/용어집.md)).
 
 > 이 저장소에는 **게임 데이터(롬·디스크 이미지, 추출한 원문 대사, 그래픽, 스크린샷)가 들어 있지 않습니다.**
@@ -18,38 +18,42 @@
 
 ### 준비물
 
-- 일본판 Rev 1(`GSAJ01`) ISO. 북미판·유럽판이나 RVZ·NKit·CISO로 변환한 이미지에는 적용할 수 없습니다. 변환한 이미지는 Dolphin에서 ISO로 되돌린 뒤 적용하세요.
-- xdelta 패치 도구. Windows에서는 Delta Patcher를, 명령줄에서는 xdelta3를 쓰면 됩니다.
+- 일본판 Rev 1(`GSAJ01`) 이미지. ISO·GCM은 그대로, CISO·WIA·WDF·GCZ는 패처가 ISO로 바꿔서 적용합니다.
+- Windows 10 이상(기본 PowerShell 사용). 다른 도구는 필요 없습니다.
+
+| 원본 형식 | 결과 | 비고 |
+|---|---|---|
+| ISO, GCM | ISO | |
+| CISO, WIA, WDF, GCZ | ISO | 동봉한 wit으로 ISO로 바꾼 뒤 적용 |
+| RVZ | 지원 안 함 | Dolphin에서 ISO로 변환한 뒤 적용 |
+| NKit | 지원 안 함 | NKit 도구로 원래 ISO로 되돌린 뒤 적용 |
+
+패처가 게임 파일 하나하나를 원본과 비교하므로, 덤프 방식에 따라 ISO 전체 MD5가 달라도 게임 파일만 같으면 적용됩니다. 북미판·유럽판과 이미 한글 패치를 적용한 이미지에는 적용되지 않습니다.
 
 ### 적용 방법
 
-1. [배포 페이지](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.1)에서 원하는 폰트의 ZIP 하나를 받습니다.
+1. [배포 페이지](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2f)에서 `sfa-korean-v1.2f.zip`을 받아 풉니다.
+2. 풀린 폴더에 원본 이미지를 넣고 `패치하기.bat`을 더블클릭합니다. 원본 파일을 `패치하기.bat` 위에 끌어다 놓아도 됩니다.
+3. 원본과 같은 폴더에 `Star Fox Adventures (Korean).iso`가 생깁니다. 원본 파일은 그대로 남습니다.
 
-   | 폰트 | 배포 파일 |
-   |---|---|
-   | 맑은 고딕 Bold | `sfa-korean-v1.1-malgun.zip` |
-   | Pretendard Bold | `sfa-korean-v1.1-pretendard.zip` |
+결과 파일 이름을 바꾸려면 두 번째 인자로 지정합니다. 오류 메시지와 자세한 방법은 ZIP에 들어 있는 `README.txt`를 참고하세요.
 
-2. ZIP을 풀고 원본 ISO에 `.xdelta` 패치를 적용합니다. 명령줄에서는 다음처럼 적용합니다.
-
-   ```bash
-   xdelta3 -d -s "Star Fox Adventures (Japan) (Rev 1).iso" sfa-korean-pretendard.xdelta "Star Fox Adventures (Korean).iso"
-   ```
-
-3. 결과 ISO의 확인값을 아래 표와 비교합니다.
-
-자세한 방법은 ZIP에 들어 있는 `README.txt`를 참고하세요.
+```bash
+패치하기.bat "Star Fox Adventures (Japan) (Rev 1).iso" "D:/Games/Star Fox Adventures (Korean).iso"
+```
 
 일본판 기준 패치라 세이브 데이터는 일본판 세이브와 호환됩니다. Dolphin 세이브(`.gci`)를 Nintendont로 옮길 때는 메모리 카드 이미지를 일본어(Shift-JIS) 인코딩으로 만들어야 세이브 설명문이 깨지지 않습니다.
 
-### 파일 확인값
+### 원본 확인값
 
-| 항목 | 원본 일본판 Rev 1 | 패치 적용 결과 (v1.1, 맑은 고딕) | 패치 적용 결과 (v1.1, Pretendard) |
-|---|---|---|---|
-| 크기 | 1,459,978,240 바이트 | 1,459,978,240 바이트 | 1,459,978,240 바이트 |
-| CRC32 | `9781203A` | `A0A7125C` | `9EED902D` |
-| MD5 | `ebff34930b3e8846167047bf71d25fbc` | `c9b1f3a673e96e8a79e6c17cda5d4aef` | `9365e36151888c3013547d6c9fa3c634` |
-| SHA-1 | `979e8f24000cb9a8b332228a6b0fbf8a59aa0cab` | `42e812a029e218d386e64354fe1cc3ca49194bef` | `078e71644e6c02998d890fb76d97cacb1feb39b2` |
+Redump 정본 ISO의 값입니다. 다른 덤프도 게임 파일이 같으면 적용됩니다.
+
+| 항목 | 원본 일본판 Rev 1 |
+|---|---|
+| 크기 | 1,459,978,240 바이트 |
+| CRC32 | `9781203A` |
+| MD5 | `ebff34930b3e8846167047bf71d25fbc` |
+| SHA-1 | `979e8f24000cb9a8b332228a6b0fbf8a59aa0cab` |
 
 원본 파일명 예: `Star Fox Adventures (Japan) (Rev 1).iso`
 
@@ -77,19 +81,13 @@
 
 - Python 3.10 이상과 `pip install -r requirements.txt`(numpy, Pillow, opencv-python).
 - 일본판 ISO `Star Fox Adventures (Japan) (Rev 1).iso`(위 확인값과 일치하는 파일).
-- 게임 안 글리프 폰트. 기본값은 맑은 고딕 Bold(`C:/Windows/Fonts/malgunbd.ttf`)이며 `--font` 옵션이나 환경 변수 `SFA_GLYPH_FONT`로 바꿀 수 있습니다. Pretendard판은 [Pretendard](https://github.com/orioncactus/pretendard) v1.3.9의 `Pretendard-Bold.otf`를 씁니다.
+- 게임 안 글리프 폰트. 배포판은 G마켓 산스 Bold(`GmarketSansBold.otf`)를 `--font`로 지정해 만듭니다. 지정하지 않으면 맑은 고딕 Bold(`C:/Windows/Fonts/malgunbd.ttf`)를 씁니다. 환경 변수 `SFA_GLYPH_FONT`로도 바꿀 수 있습니다.
 - 로고 폰트 Noto Sans KR 가변 폰트(`C:/Windows/Fonts/NotoSansKR-VF.ttf`).
 
 ### 빌드
 
 ```bash
-python build.py --iso "Star Fox Adventures (Japan) (Rev 1).iso"
-```
-
-Pretendard판은 다음처럼 빌드합니다.
-
-```bash
-python build.py --skip-logo --font Pretendard-Bold.otf --out "Star Fox Adventures (Korean, Pretendard).iso" --name "Star Fox Adventures KOR PRETENDARD"
+python build.py --iso "Star Fox Adventures (Japan) (Rev 1).iso" --font GmarketSansBold.otf
 ```
 
 `--iso`를 생략하면 환경 변수 `SFA_JP_ISO`, 저장소 폴더, 상위 폴더 순서로 GSAJ01 ISO를 찾습니다.
@@ -103,11 +101,17 @@ python build.py --skip-logo --font Pretendard-Bold.otf --out "Star Fox Adventure
 4. ISO 복사본에 수정 파일을 추가합니다. 원본 데이터 뒤에 이어 쓰고 FST만 고칩니다.
 5. `tools/verify_iso.py`로 일본어 문장 잔존과 텍스처 크기를 검사합니다.
 
-배포용 패치는 xdelta 3.1.0으로 만듭니다. 구버전 패처와 호환되도록 djw 2차 압축을 씁니다.
+버튼 안내 글자(`Link` 구역)는 띠 테두리에 닿지 않도록 2px 작게 그립니다(`sfa/isopatch.py`의 `SHRINK`, 환경 변수 `SFA_SHRINK=Link:N`으로 바꿀 수 있음).
+
+#### 배포용 패처 만들기
+
+v1.2f부터는 ISO 통째 xdelta 대신 파일 단위 패처로 배포합니다. 원본과 한글 ISO를 FST 기준으로 비교해 바뀐 파일마다 xdelta 차분을 만들고, 사용자용 `patcher/패치하기.bat`·`patcher/patch.ps1`과 wit·xdelta3를 함께 묶습니다.
 
 ```bash
-xdelta3 -e -9 -S djw -A= -s "Star Fox Adventures (Japan) (Rev 1).iso" "Star Fox Adventures (Korean).iso" sfa-korean.xdelta
+python tools/make_patcher.py --orig "Star Fox Adventures (Japan) (Rev 1).iso" --build "Star Fox Adventures (Korean).iso"     --out ../release/v1.2f/sfa-korean-v1.2f --version 1.2f --wit <wit-cygwin64 폴더> --xdelta <xdelta3.exe> --readme README.txt
 ```
+
+패처는 원본 ISO를 복사한 뒤 바뀐 파일만 디스크 끝 빈 곳에 쓰고 FST와 게임 이름만 고칩니다. 빌드와 같은 배치 규칙이라 Redump 정본에 적용하면 빌드 결과와 바이트까지 같은 ISO가 나옵니다.
 
 #### 기존 한글 ISO의 로고만 교체
 
@@ -118,7 +122,7 @@ python assets/make_logo.py "원본 일본판.iso"
 python tools/replace_logo.py "기존 한글판.iso" "로고 수정 한글판.iso"
 ```
 
-`--logo`로 512×191 PNG를 따로 지정할 수도 있습니다. 배포용 xdelta는 로고 수정 한글판과 **원본 일본판 ISO**를 비교해 만듭니다.
+`--logo`로 512×191 PNG를 따로 지정할 수도 있습니다. v1.1 당시 배포용 xdelta는 로고 수정 한글판과 **원본 일본판 ISO**를 비교해 만듭니다.
 
 ### 번역 수정
 
@@ -151,7 +155,8 @@ build.py       전체 빌드
 sfa/           라이브러리: 디스크 FST(gcm), gametext 포맷·글리프(gametext), GX 텍스처(gxtex), ISO 패치(isopatch)
 translation/   번역 원고: menu.json(메뉴·시스템), prologue.py, ch1.py에서 ch6.py까지, 공용 common.py
 assets/        타이틀 로고 생성, 배너 교체
-tools/         원문 추출, 미번역 목록, 줄 수·줄 너비 검사, 결과 ISO 검사, 로고 교체
+tools/         원문 추출, 미번역 목록, 줄 수·줄 너비 검사, 결과 ISO 검사, 로고 교체, 배포용 패처 생성
+patcher/       사용자용 패처(패치하기.bat, patch.ps1)
 docs/          용어집·말투표, 파일 포맷 메모, 릴리즈 노트 사본(docs/releases/)
 ```
 
@@ -167,8 +172,8 @@ docs/          용어집·말투표, 파일 포맷 메모, 릴리즈 노트 사�
 ## 크레딧·라이선스
 
 - 이 저장소의 도구 코드, 한국어 번역문, 문서: [MIT License](LICENSE) (© 2026 arqhive).
-- Pretendard판 글리프: [Pretendard](https://github.com/orioncactus/pretendard), SIL Open Font License 1.1.
-- 맑은 고딕판 글리프: Microsoft 맑은 고딕 Bold로 그렸습니다.
+- 게임 안 글자: G마켓 산스 Bold(㈜지마켓 무료 글꼴)로 그렸습니다. 글꼴 파일은 배포하지 않습니다. v1.1 이전 배포판은 맑은 고딕 Bold와 [Pretendard](https://github.com/orioncactus/pretendard)(SIL OFL 1.1)로 그렸습니다.
+- 패처에 동봉한 도구: wit v3.05a(GPL-2.0, 이미지 변환에만 사용), xdelta3 3.1.0(Apache-2.0).
 - 타이틀 로고: Noto Sans KR로 그렸습니다.
 
 ## 면책
