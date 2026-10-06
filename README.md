@@ -3,7 +3,7 @@
 *Star Fox Adventures* (게임큐브, 일본판 Rev 1 `GSAJ01`) 비공식 한국어 팬 패치입니다.
 대사는 일본어판 원문을 기준으로 번역했습니다.
 
-**제작: arqhive** · **최신 버전: [v1.2f](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2f) (최종판)**
+**제작: arqhive** · **최신 버전: [v1.2.1f](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2.1f) (최종판)**
 
 - 대사, 메뉴, 컷신 자막, 슬리피 힌트, 커뮤니케이터, 월드맵 등 게임 내 텍스트 전체를 한글화했습니다.
 - 파일마다 필요한 한글 글리프를 그려 넣는 방식이라 실행 파일(DOL)은 수정하지 않습니다.
@@ -32,7 +32,7 @@
 
 ### 적용 방법
 
-1. [배포 페이지](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2f)에서 `GSAJ_KPatch_v1.2f.zip`을 받아 풉니다.
+1. [배포 페이지](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2.1f)에서 `GSAJ_KPatch_v1.2.1f.zip`을 받아 풉니다.
 2. 풀린 폴더에 원본 이미지를 넣고 `패치하기.bat`을 더블클릭합니다. 원본 파일을 `패치하기.bat` 위에 끌어다 놓아도 됩니다.
 3. 원본과 같은 폴더에 `Star Fox Adventures (Korean).iso`가 생깁니다. 원본 파일은 그대로 남습니다.
 
@@ -108,7 +108,7 @@ python build.py --iso "Star Fox Adventures (Japan) (Rev 1).iso" --font GmarketSa
 v1.2f부터는 ISO 통째 xdelta 대신 파일 단위 패처로 배포합니다. 원본과 한글 ISO를 FST 기준으로 비교해 바뀐 파일마다 xdelta 차분을 만들고, 사용자용 `patcher/패치하기.bat`·`patcher/patch.ps1`과 wit·xdelta3를 함께 묶습니다.
 
 ```bash
-python tools/make_patcher.py --orig "Star Fox Adventures (Japan) (Rev 1).iso" --build "Star Fox Adventures (Korean).iso"     --out ../release/v1.2f/sfa-korean-v1.2f --version 1.2f --wit <wit-cygwin64 폴더> --xdelta <xdelta3.exe> --readme patcher/README.txt
+python tools/make_patcher.py --orig "Star Fox Adventures (Japan) (Rev 1).iso" --build "Star Fox Adventures (Korean).iso"     --out ../release/v1.2.1f/GSAJ_KPatch_v1.2.1f --version 1.2.1f --wit <wit-cygwin64 폴더> --xdelta <xdelta3.exe> --readme patcher/README.txt
 ```
 
 `patcher/README.txt`는 ZIP에 넣는 사용자 설명서입니다. wit은 [Wiimms ISO Tools](https://wit.wiimm.de/) v3.05a cygwin64판, xdelta3는 [3.1.0](https://github.com/jmacd/xdelta-gpl/releases/tag/v3.1.0) Windows판을 씁니다.
