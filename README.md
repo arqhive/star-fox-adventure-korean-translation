@@ -32,7 +32,7 @@
 
 ### 적용 방법
 
-1. [배포 페이지](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2f)에서 `sfa-korean-v1.2f.zip`을 받아 풉니다.
+1. [배포 페이지](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2f)에서 `GSAJ_KPatch_v1.2f.zip`을 받아 풉니다.
 2. 풀린 폴더에 원본 이미지를 넣고 `패치하기.bat`을 더블클릭합니다. 원본 파일을 `패치하기.bat` 위에 끌어다 놓아도 됩니다.
 3. 원본과 같은 폴더에 `Star Fox Adventures (Korean).iso`가 생깁니다. 원본 파일은 그대로 남습니다.
 
