@@ -3,7 +3,7 @@
 *Star Fox Adventures* (게임큐브, 일본판 Rev 1 `GSAJ01`) 비공식 한국어 팬 패치입니다.
 대사는 일본어판 원문을 기준으로 번역했습니다.
 
-**제작: arqhive** · **최신 버전: [v1.2.1f](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2.1f) (최종판)**
+**제작: arqhive** · **최신 버전: [v1.2.1f](https://github.com/arqhive/star-fox-adventure-korean-translation/releases/tag/v1.2.1f) (완성판)**
 
 - 대사, 메뉴, 컷신 자막, 슬리피 힌트, 커뮤니케이터, 월드맵 등 게임 내 텍스트 전체를 한글화했습니다.
 - 파일마다 필요한 한글 글리프를 그려 넣는 방식이라 실행 파일(DOL)은 수정하지 않습니다.
